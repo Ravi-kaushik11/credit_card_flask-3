@@ -1,0 +1,62 @@
+html, body {
+    font-family: Arial;
+    background-color:gray;
+    background-image: url('/static/image/ravi7.jpg');
+    background-size: cover ;
+    background-position: center ;
+    background-repeat: no-repeat ;
+    height: 250vh;
+    width: 100vw;
+}
+
+/* Fix for Tailwind conflicts */
+.bg-gray-100 {
+    background-color: transparent ;
+}
+.container {
+    background-color: rgb(229, 191, 94);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+}
+button {
+    padding: 10px 20px;
+    background-color: goldenrod; /* Sky blue color */
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Also target Tailwind button classes */
+.bg-blue-600, .bg-blue-700 {
+    background-color: goldenrod ; /* Sky blue color */
+}
+
+.bg-gray-100 text-gray-800{
+    background-image: url('../image/ravi7.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 190vh;
+    width: 80vw;
+}
+
+.max-w-3xl {
+    background-color: rgba(255, 255, 255, 0.7) ;
+}
+
+/* Or target the form container directly */
+.bg-white {
+    background-color: rgba(255, 255, 255, 0.7) ;
+}
+
+/* Match heading color to sky blue button color */
+.text-blue-700, h2 {
+    color: rgb(209, 157, 28) ;
+}

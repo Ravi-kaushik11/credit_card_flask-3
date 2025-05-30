@@ -1,0 +1,102 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Credit Card Fraud Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        function validateForm() {
+            let username = document.getElementById("User_Name").value.trim();
+            let cardNumber = document.getElementById("Card_Number").value.trim();
+            let cvv = document.getElementById("cvv").value.trim();
+
+            let valid = true;
+
+            // Reset error messages
+            document.getElementById("usernameError").textContent = "";
+            document.getElementById("cardError").textContent = "";
+            document.getElementById("cvvError").textContent = "";
+
+            if (!/^[A-Za-z\s]+$/.test(username)) {
+                document.getElementById("usernameError").textContent = "Only alphabetic characters allowed.";
+                valid = false;
+            }
+
+            if (!/^\d{12}$/.test(cardNumber)) {
+                document.getElementById("cardError").textContent = "Card number must be exactly 12 digits.";
+                valid = false;
+            }
+
+            if (!/^\d{3}$/.test(cvv)) {
+                document.getElementById("cvvError").textContent = "CVV must be exactly 3 digits.";
+                valid = false;
+            }
+
+            return valid;
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="max-w-3xl mx-auto mt-12 p-8 bg-white rounded-2xl shadow-lg">
+        <h2 class="text-3xl font-bold text-center mb-8 text-blue-700">Credit Card Fraud Detection</h2>
+
+        <form action="/predict" method="post" onsubmit="return validateForm()" class="space-y-6">
+            <div>
+                <label class="block mb-2 font-semibold">Select Model:</label>
+                <select name="model" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="xgboost">XGBoost</option>
+                    <option value="random_forest">Random Forest</option>
+                    <option value="decision_tree">Decision Tree</option>
+                    <option value="lightgbm">LightGBM</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block mb-2 font-semibold">User Name:</label>
+                <input type="text" name="User_Name" id="User_Name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <div id="usernameError" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+            <div>
+                <label class="block mb-2 font-semibold">Card Number:</label>
+                <input type="text" name="Card_Number" id="Card_Number" maxlength="12" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <div id="cardError" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+            <div>
+                <label class="block mb-2 font-semibold">CVV:</label>
+                <input type="password" name="cvv" id="cvv" maxlength="3" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <div id="cvvError" class="text-red-600 text-sm mt-1"></div>
+            </div>
+
+           <!-- Features Inputs -->
+             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {% for i in range(1, 30) %}
+                <div>
+                    <label class="block mb-1 font-semibold text-sm">Transaction {{ i }}:</label>
+                    <input type="number" step="any" name="feature" required class="w-full px-3 py-1.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <label class="block mt-4 mb-2 font-semibold">Transaction Amount:</label>
+                <input type="number" name="feature" step="0.01" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
+    
+            <button type="submit" class="w-full bg-blue-600 hover:bg-yellow-700 text-white font-semibold py-2 rounded-lg">
+                Check for Fraud
+            </button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="mt-8 text-center text-xl font-bold {{ result_color }}">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+    
+ 
+</body>
+</html>
